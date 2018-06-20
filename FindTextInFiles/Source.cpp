@@ -9,13 +9,28 @@
 
 using namespace std;
 
-string GetLastErrorAsString(void); // stackoverflow
 void SearchAllDirectories(const string & start_path, const string & search_phrase, const string & type);
+
+int main()
+{
+    const string dir = "C:\\Projects\\CAN\\cantact-fw-master" ;
+    const string search_phrase = "STM32";
+    const string type_filter = "*.c";  // *.c;*.h
+
+    SearchAllDirectories(dir, search_phrase, type_filter);
+
+    system("pause");
+    return 0;
+}
+
+string GetLastErrorAsString(void); // stackoverflow
+void OpenFile(const string & filename, const string & text);
+void CheckSearchResults(const WIN32_FIND_DATA & result, const string start_path, const string search_phrase, const string type);
 
 void OpenFile(const string & filename, const string & text)
 {
     HANDLE file = INVALID_HANDLE_VALUE;
-    
+
     file = CreateFile(filename.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
     if (INVALID_HANDLE_VALUE != file)
@@ -48,7 +63,7 @@ void OpenFile(const string & filename, const string & text)
             if (string::npos != found)
             {
                 if (!once++) { cout << "file: " << filename.c_str() << endl; }
-                
+
                 cout << "found \"" << text << "\" at pos: " << found << endl;
                 offset = found + text.length();
             }
@@ -62,7 +77,6 @@ void OpenFile(const string & filename, const string & text)
 
     CloseHandle(file);
 }
-
 
 void CheckSearchResults(const WIN32_FIND_DATA & result, const string start_path, const string search_phrase, const string type)
 {
@@ -89,8 +103,8 @@ void CheckSearchResults(const WIN32_FIND_DATA & result, const string start_path,
 void SearchAllDirectories(const string & start_path, const string & search_phrase, const string & type)
 {
     WIN32_FIND_DATA result = { 0 };
-    HANDLE          file = INVALID_HANDLE_VALUE; 
-    
+    HANDLE          file = INVALID_HANDLE_VALUE;
+
     file = FindFirstFile((start_path + "\\*").c_str(), &result);
 
     if (INVALID_HANDLE_VALUE != file)
@@ -122,18 +136,6 @@ void SearchAllDirectories(const string & start_path, const string & search_phras
     }
 
     FindClose(file);
-}
-
-int main()
-{
-    const string dir = "C:\\Projects\\CAN\\cantact-fw-master" ;
-    const string search_phrase = "STM32";
-    const string type_filter = "*.c";  // *.c;*.h
-
-    SearchAllDirectories(dir, search_phrase, type_filter);
-
-    system("pause");
-    return 0;
 }
 
 string GetLastErrorAsString(void)
