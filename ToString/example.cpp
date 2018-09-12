@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
     RegisterClassEx(&wc);
 
-    RECT wr = { 0, 0, 800, 400 };    // set the size, but not the position
+    RECT wr = { 0, 0, 800, 500 };    // set the size, but not the position
     AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);    // adjust the size
 
     hWnd = CreateWindowEx(NULL,
@@ -74,7 +74,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
         TEXT("EDIT"),
         NULL,
         WS_CHILD | WS_VISIBLE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_MULTILINE,
-        50, 60, 700, 300,
+        50, 60, 700, 400,
         hWnd,
         (HMENU)IDC_EDIT,
         GetModuleHandle(NULL),
